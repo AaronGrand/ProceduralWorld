@@ -5,16 +5,18 @@ using UnityEngine;
 
 public class Chunk
 {
-    private ChunkCoord coords;
+    public ChunkCoord coords;
     Material material;
     Mesh mesh;
 
 
-    GameObject chunkObject;
+    public GameObject chunkObject;
     MeshRenderer meshRenderer;
     MeshFilter meshFilter;
 
-    Vector3 position;
+    public Vector3 position;
+
+    private bool _isActive;
 
 
     public Chunk(ChunkCoord chunkCoords, Material _material)
@@ -34,6 +36,8 @@ public class Chunk
         chunkObject.transform.position = new Vector3(coords.x * Data.chunkWidth, 0f, coords.z * Data.chunkWidth);
         chunkObject.name = "Chunk " + coords.x + ", " + coords.z;
         position = chunkObject.transform.position;
+
+        this.isActive = true;
 
         GenerateChunk();
     }
@@ -79,6 +83,18 @@ public class Chunk
         mesh.RecalculateNormals();
 
         meshFilter.mesh = mesh;
+    }
+
+    public bool isActive
+    {
+        get { return _isActive; }
+        set
+        {
+
+            _isActive = value;
+            if (chunkObject != null)
+                chunkObject.SetActive(value);
+        }
     }
 }
 
